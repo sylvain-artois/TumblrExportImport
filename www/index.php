@@ -46,29 +46,27 @@ $app
 
 //OAuth callback after Tumblr auth
 $app
-    ->get('/authenticated', function () use ($app, $servicesCredentials, $currentUri, $serviceFactory) {
+    ->get('/authenticated', function () use ($application) {
 
-        $storage = new OAuth\Common\Storage\Session();
-        $token   = $storage->retrieveAccessToken('Tumblr');
-        $credentials = new OAuth\Common\Consumer\Credentials(
-            $servicesCredentials['tumblr']['key'],
-            $servicesCredentials['tumblr']['secret'],
-            $app->urlFor("authenticated")
+        $token          = $application->getTokenFromStorage();
+        $tumblrService  = $application->getOauthService(
+            $application->getSlim()->urlFor("authenticated")
         );
 
-        $tumblrService = $serviceFactory->createService('tumblr', $credentials, $storage);
-
-        // This was a callback request from tumblr, get the token
         $tumblrService->requestAccessToken(
-            $_GET['oauth_token'],
-            $_GET['oauth_verifier'],
+            $application->getSlim()->request->get("oauth_token"),
+            $application->getSlim()->request->get("oauth_verifier"),
             $token->getRequestTokenSecret()
         );
 
-        // Send a request now that we have access token
         $result = json_decode($tumblrService->request('user/info'));
 
-        echo 'result: <pre>' . print_r($result, true) . '</pre>';
+        $application->getSlim()->render(
+            'authenticated.php',
+            array(
+                'data' => $result
+            )
+        );
     })
     ->name('authenticated');
 

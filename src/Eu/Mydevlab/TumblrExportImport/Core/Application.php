@@ -10,6 +10,7 @@ use OAuth\Common\Http\Uri\UriInterface;
 use OAuth\Common\Service\ServiceInterface;
 use OAuth\Common\Storage\Session;
 use OAuth\Common\Storage\TokenStorageInterface;
+use OAuth\Common\Token\TokenInterface;
 use OAuth\ServiceFactory;
 use Slim\Slim;
 use Symfony\Component\Yaml\Yaml;
@@ -102,6 +103,15 @@ class Application
             $this->getCredentials($callbackUrl),
             $this->getStorage()
         );
+    }
+
+    /**
+     * @param string $service
+     * @return TokenInterface
+     */
+    public function getTokenFromStorage($service = "Tumblr")
+    {
+        return $this->getStorage()->retrieveAccessToken($service);
     }
 
     /**
