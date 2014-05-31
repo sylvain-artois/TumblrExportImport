@@ -1,0 +1,23 @@
+{
+    "name": "Sylvain-Artois/TumblrExportImport",
+    "description": "Use Tumblr API for exporting blog post in various format, and optionaly, re-import in another blog",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sylvain Artois",
+            "email": "sylvain.artois@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "2.*",
+        "gamespree/i18n": "dev-master",
+        "rain/raintpl": "dev-master",
+        "symfony/yaml": "2.5.*@dev",
+        "lusitanian/oauth": "~0.3",
+        "tumblr/tumblr": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {"Eu\\": "src/"}
+    }
+}
